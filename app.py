@@ -36,7 +36,7 @@ with c2:
         }
         """,
     ):
-        st.image("./cat.jpg")
+        st.image("./IT.jpg")
 
 st.divider()
 
