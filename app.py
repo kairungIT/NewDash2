@@ -1,10 +1,31 @@
 import streamlit as st
+import cv2
+import numpy as np
 
-# ใช้ HTML สำหรับการเชื่อมโยงไฟล์ CSS
-html_string = "<h3>this is an html string</h3>"
-st.markdown(html_string, unsafe_allow_html=True)
-st.markdown("<link rel='stylesheet' href='styles.css'>", unsafe_allow_html=True)
-st.write("<p style='color: red;'>This text is red.</p>")
+# สร้างหน้าต่างแสดงภาพจากกล้อง
+st.title('แอพพลิเคชันกล้อง')
 
-# สร้างข้อมูลหลักในแอพพลิเคชัน
-st.title('แอพพลิเคชัน Streamlit ที่ได้รับการตกแต่ง')
+# เปิดกล้อง
+cap = cv2.VideoCapture(0)
+
+# ตัวแปรสำหรับเก็บภาพจากกล้อง
+frame = None
+
+# สร้างส่วนของ UI เพื่อแสดงภาพจากกล้อง
+image_placeholder = st.empty()
+
+# รับข้อมูลจากกล้องและแสดงใน Streamlit
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # แสดงภาพใน Streamlit
+    image_placeholder.image(frame, channels="BGR")
+
+    # ใช้คำสั่งตรวจสอบการหยุดที่กำหนดเอง (ยกเลิกการแสดงภาพจากกล้อง)
+    if st.button('หยุดการแสดงภาพ'):
+        break
+
+# ปิดกล้องเมื่อเสร็จสิ้น
+cap.release()
